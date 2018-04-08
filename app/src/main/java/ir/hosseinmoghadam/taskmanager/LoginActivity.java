@@ -3,6 +3,7 @@ package ir.hosseinmoghadam.taskmanager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,10 +30,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ir.hosseinmoghadam.taskmanager.responses.LoginResponse;
+import ir.hosseinmoghadam.taskmanager.services.LoginApiService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -60,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    static AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -85,13 +93,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        if (App.retrofit == null){
+            App.retrofit = new Retrofit.Builder()
+                    .baseUrl(App.baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+//                attemptLogin();
+//                Toast.makeText(LoginActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                LoginApiService service = App.retrofit.create(LoginApiService.class);
+                Call<LoginResponse> call = service.login("5a9314fbe4b04e579ee1edbe","5a9314fbe4b05bb64131ee38", String.valueOf(mEmailView.getText()), String.valueOf(mPasswordView.getText()));
+                call.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        if (response.isSuccessful()){
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            Log.i("test1397", "onResponse: code"+ response.code());
+                            Log.i("test1397", "onResponse: body"+ response.body().getAccessToken());
+                        }
+                        else {
+                            Log.i("test1397", "onResponse: code"+ response.code());
+                            Log.i("test1397", "onResponse: body"+ response.body());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        Log.i("test1397", "onResponse: failed");
+                        Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
+
+            }
+        });
+
+        findViewById(R.id.register_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 

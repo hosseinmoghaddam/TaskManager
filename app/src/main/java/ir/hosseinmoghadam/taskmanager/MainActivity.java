@@ -3,6 +3,8 @@ package ir.hosseinmoghadam.taskmanager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,8 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
+import ir.hosseinmoghadam.taskmanager.fragments.FinishTaskFragment;
+import ir.hosseinmoghadam.taskmanager.fragments.TaskFragment;
 import ir.hosseinmoghadam.taskmanager.models.User;
 import ir.hosseinmoghadam.taskmanager.responses.LoginResponse;
 import ir.hosseinmoghadam.taskmanager.services.LoginApiService;
@@ -27,51 +33,39 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Toolbar toolbar;
+    Fragment fragment =null;
+    Class fragmentClass = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
-        if (App.retrofit == null){
-            App.retrofit = new Retrofit.Builder()
-                    .baseUrl(App.baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginApiService service = App.retrofit.create(LoginApiService.class);
-                Call<LoginResponse> call = service.login("5a9314fbe4b04e579ee1edbe","5a9314fbe4b05bb64131ee38","moghadam","123456");
-                call.enqueue(new Callback<LoginResponse>() {
-                    @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        if (response.isSuccessful()){
-                            Log.i("test1397", "onResponse: code"+ response.code());
-                            Log.i("test1397", "onResponse: body"+ response.body().getAccessToken());
-                        }
-                        else {
-                            Log.i("test1397", "onResponse: code"+ response.code());
-                            Log.i("test1397", "onResponse: body"+ response.body());
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
 
             }
         });
+
+
+        toolbar.setTitle("کارهای در حال انجام");
+        fragmentClass = DoingTaskFragment.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,15 +74,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.username)).setText(LoginActivity.mEmailView.getText());
+
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        findViewById(R.id.textiview).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
     }
 
@@ -131,18 +123,34 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            toolbar.setTitle("کارها");
+            fragmentClass = TaskFragment.class;
         } else if (id == R.id.nav_gallery) {
+            toolbar.setTitle("کارهای درحال انجام");
+            fragmentClass = DoingTaskFragment.class;
 
         } else if (id == R.id.nav_slideshow) {
+            toolbar.setTitle("کارهای انجام شده");
+            fragmentClass = FinishTaskFragment.class;
 
-        } else if (id == R.id.nav_manage) {
+//        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
+        try {
+            assert fragmentClass != null;
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
