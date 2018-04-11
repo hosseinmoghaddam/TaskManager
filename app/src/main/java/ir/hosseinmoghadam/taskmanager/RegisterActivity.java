@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ir.hosseinmoghadam.taskmanager.models.User;
@@ -28,7 +29,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Call<RegisterResponse> call = service.register( new User("mfdsklfms", "asdlkmmd", "djnfjsknf", "skdfmkdsmfdk", "skjdfnsjkdnf@f.com", "123456", null));
+                Call<RegisterResponse> call = service.register( new User(
+                        ((TextView)findViewById(R.id.firstName)).getText().toString(),
+                        ((TextView)findViewById(R.id.lastName)).getText().toString(),
+                        ((TextView)findViewById(R.id.username)).getText().toString(),
+                        ((TextView)findViewById(R.id.password)).getText().toString(),
+                        ((TextView)findViewById(R.id.email)).getText().toString(),
+                        ((TextView)findViewById(R.id.phoneNumber)).getText().toString()
+                        , null));
                 call.enqueue(new Callback<RegisterResponse>() {
                     @Override
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
