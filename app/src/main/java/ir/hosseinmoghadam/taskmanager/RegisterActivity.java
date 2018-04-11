@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import ir.hosseinmoghadam.taskmanager.models.User;
+import ir.hosseinmoghadam.taskmanager.responses.RegisterResponse;
 import ir.hosseinmoghadam.taskmanager.services.RegisterApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,21 +24,23 @@ public class RegisterActivity extends AppCompatActivity {
 
         
 
-        findViewById(R.id.register_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Call<User> call = service.register("5a9314fbe4b04e579ee1edbe", new User("hossein", "moghadamt2", "moghadamt2", "123456", "h@f.com", "123456", null));
-                call.enqueue(new Callback<User>() {
+                Call<RegisterResponse> call = service.register( new User("mfdsklfms", "asdlkmmd", "djnfjsknf", "skdfmkdsmfdk", "skjdfnsjkdnf@f.com", "123456", null));
+                call.enqueue(new Callback<RegisterResponse>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
+                    public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                         if(response.isSuccessful()){
+                            Log.i("regist1397", "onResponse: "+response.code());
+                        }else {
                             Log.i("regist1397", "onResponse: "+response.code());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
                         Toast.makeText(RegisterActivity.this, "failed", Toast.LENGTH_SHORT).show();
                     }
                 });
