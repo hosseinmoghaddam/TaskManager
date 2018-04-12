@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             finish();
                             Log.i("test1397", "onResponse: code"+ response.code());
                             Log.i("test1397", "onResponse: body"+ response.body().getAccessToken());
+                            App.access_token =response.body().getAccessToken();
                         }
                         else {
                             Log.i("test1397", "onResponse: code"+ response.code());

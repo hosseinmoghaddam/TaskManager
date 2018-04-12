@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ir.hosseinmoghadam.taskmanager.dialogs.AddTaskDialog;
 import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.FinishTaskFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.TaskFragment;
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AddTaskDialog dialog =new AddTaskDialog(MainActivity.this);
+                dialog.show();
 
             }
         });
