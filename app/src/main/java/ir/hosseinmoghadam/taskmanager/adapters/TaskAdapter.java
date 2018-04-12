@@ -63,14 +63,9 @@ public class TaskAdapter extends BaseAdapter {
         final Task task= getItem(i);
         viewHolder.name.setText(task.getName());
         viewHolder.description.setText(task.getDescription());
-/*        viewHolder.professor_name.setText(course.getProfessor_id().getLastname());
-        viewHolder.price.setText(course.getCourse_id().getPrice()+"");
-        viewHolder.details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, "dialog box comming soon", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        Log.i("kkkkkkkkk", "getView: "+task.getCompleted());
+        if (task.getCompleted() !=null)
+            viewHolder.completed.setChecked(task.getCompleted());
         return view;
     }
     static class ViewHolder{
@@ -82,7 +77,7 @@ public class TaskAdapter extends BaseAdapter {
         public ViewHolder(View v) {
             name = (TextView) v.findViewById(R.id.taskName);
             description = (TextView) v.findViewById(R.id.taskDescription);
-            completed = (ToggleButton) v.findViewById(R.id.toggleButton);
+            completed = (ToggleButton) v.findViewById(R.id.toggleButton2);
         }
     }
 }

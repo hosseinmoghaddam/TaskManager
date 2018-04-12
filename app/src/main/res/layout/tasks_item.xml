@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:forceHasOverlappingRendering="true"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+        android:id="@+id/taskName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="تاگل" />
+        android:background="@android:color/holo_blue_dark"
+        android:fontFamily="serif-monospace"
+        android:text="نام"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/taskDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="توضیح" />
 
-    <TextView
-        android:id="@+id/taskName"
-        android:layout_width="wrap_content"
+    <ToggleButton
+        android:id="@+id/toggleButton2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="نام" />
+        android:text="ToggleButton"
+        android:textOff="انجام شده"
+        android:textOn="در حال انجام" />
 
 </LinearLayout>
