@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ir.hosseinmoghadam.taskmanager.R;
@@ -51,7 +52,7 @@ public class TaskFinishAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         Log.i(TAG, "getView: adapt");
         final ViewHolder viewHolder;
-        if (view == null){
+        if (view == null) {
             view = inflater.inflate(R.layout.tasks_item2, null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
@@ -59,12 +60,13 @@ public class TaskFinishAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        final Task task= getItem(i);
+        final Task task = getItem(i);
         viewHolder.name.setText(task.getName());
         viewHolder.description.setText(task.getDescription());
         return view;
     }
-    static class ViewHolder{
+
+    static class ViewHolder {
         TextView name;
         TextView description;
 

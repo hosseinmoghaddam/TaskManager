@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     tools:context="ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="کارهای در حال انجام" />
+        android:divider="@color/colorAccent"
+        tools:listitem="@layout/tasks_item2">
+
+    </ListView>
 
 </FrameLayout>

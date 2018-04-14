@@ -18,6 +18,7 @@ import java.util.List;
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
 import ir.hosseinmoghadam.taskmanager.adapters.TaskFinishAdapter;
+import ir.hosseinmoghadam.taskmanager.models.Task;
 import ir.hosseinmoghadam.taskmanager.responses.TaskResponse;
 import ir.hosseinmoghadam.taskmanager.services.TaskApiService;
 import retrofit2.Call;
@@ -49,7 +50,7 @@ public class FinishTaskFragment extends Fragment {
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                 if (response.isSuccessful()){
                     tasks.clear();
-                    tasks.addAll(response.body().getTasks());
+                    tasks.addAll(getFinishTasks(response.body().getTasks()));
                     adapter.notifyDataSetChanged();
                     Log.i("hossintest2018", "onResponse: "+response.code());
                 } else {
@@ -66,6 +67,20 @@ public class FinishTaskFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private List<Task> getFinishTasks(List<Task> tasks) {
+        List<Task> tasks1 = new ArrayList<>();
+        Log.i("test1234", "getFinishTasks: "+tasks);
+        for (Task task : tasks) {
+            Log.i("test1234", "getFinishTasks: "+task.getCompleted());
+            if (task.getCompleted()==null)
+                task.setCompleted(false);
+            if (task.getCompleted()){
+                Log.i("test1234", "getFinishTasks: "+tasks1.add(task));
+            }
+        }
+        return tasks1;
     }
 
 }

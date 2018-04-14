@@ -1,6 +1,8 @@
 package ir.hosseinmoghadam.taskmanager.adapters;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ToggleButton;
 
 import java.util.List;
 
+import ir.hosseinmoghadam.taskmanager.ItemDetailActivity;
 import ir.hosseinmoghadam.taskmanager.R;
 import ir.hosseinmoghadam.taskmanager.models.Task;
 
@@ -66,6 +69,28 @@ public class TaskAdapter extends BaseAdapter {
         Log.i("kkkkkkkkk", "getView: "+task.getCompleted());
         if (task.getCompleted() !=null)
             viewHolder.completed.setChecked(task.getCompleted());
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(activity, "test"+((TextView)((ViewHolder)view.getTag()).description).getText().toString(), Toast.LENGTH_SHORT).show();
+/*                Bundle arguments = new Bundle();
+                arguments.putString("description",((TextView)((ViewHolder)view.getTag()).description).getText().toString());
+                ItemDetailFragment fragment = new ItemDetailFragment();
+                fragment.setArguments(arguments);
+
+                ((FragmentActivity)activity).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.item_detail_container, fragment)
+                        .commit();*/
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ItemDetailActivity.class);
+                intent.putExtra("description",((TextView)((ViewHolder)view.getTag()).description).getText().toString() );
+                intent.putExtra("name",((TextView)((ViewHolder)view.getTag()).name).getText().toString() );
+
+                context.startActivity(intent);
+            }
+        });
+
         return view;
     }
     static class ViewHolder{
