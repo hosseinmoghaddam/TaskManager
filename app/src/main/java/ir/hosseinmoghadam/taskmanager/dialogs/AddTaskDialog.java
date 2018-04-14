@@ -16,6 +16,10 @@ import java.util.Map;
 
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
+import ir.hosseinmoghadam.taskmanager.adapters.TaskFinishAdapter;
+import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
+import ir.hosseinmoghadam.taskmanager.fragments.FinishTaskFragment;
+import ir.hosseinmoghadam.taskmanager.fragments.TaskFragment;
 import ir.hosseinmoghadam.taskmanager.models.Task;
 import ir.hosseinmoghadam.taskmanager.services.TaskApiService;
 import retrofit2.Call;
@@ -51,18 +55,31 @@ public class AddTaskDialog extends Dialog implements
 
     @Override
     public void onClick(View view) {
+        final Task task =new Task(
+                ((EditText)findViewById(R.id.taskName)).getText().toString(),
+                ((EditText)findViewById(R.id.taskDescription)).getText().toString(),
+                ((ToggleButton)findViewById(R.id.toggleButton)).isChecked());
         switch (view.getId()) {
             case R.id.ok:
-                Call<Map<String, String>> call = service.add("Bearer "+App.getAccessToken(), new Task(
-                        ((EditText)findViewById(R.id.taskName)).getText().toString(),
-                        ((EditText)findViewById(R.id.taskDescription)).getText().toString(),
-                        ((ToggleButton)findViewById(R.id.toggleButton)).isChecked()));
+                Call<Map<String, String>> call = service.add("Bearer "+App.getAccessToken(), task);
                 call.enqueue(new Callback<Map<String, String>>() {
                     @Override
                     public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                         if (response.isSuccessful()){
-                            Log.i("hossin2018", "onResponse: "+response.code());
-                            Log.i("hossin2018", "onResponse: "+response.message());
+                            if (TaskFragment.tasks !=null){
+                                TaskFragment.tasks.add(task);
+                                TaskFragment.adapter.notifyDataSetChanged();
+                            }
+                            if (FinishTaskFragment.tasks != null){
+                                FinishTaskFragment.tasks.add(task);
+                                FinishTaskFragment.adapter.notifyDataSetChanged();
+                            }
+                            if (DoingTaskFragment.tasks != null){
+                                DoingTaskFragment.tasks.add(task);
+                                DoingTaskFragment.adapter.notifyDataSetChanged();
+                            }
+
+                            Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.i("hossin2018", "onResponse: "+response.code());
                             Log.i("hossin2018", "onResponse: "+response.message());

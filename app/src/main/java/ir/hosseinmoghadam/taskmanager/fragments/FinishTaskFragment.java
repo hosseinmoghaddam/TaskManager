@@ -17,6 +17,7 @@ import java.util.List;
 
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
+import ir.hosseinmoghadam.taskmanager.adapters.TaskAdapter;
 import ir.hosseinmoghadam.taskmanager.adapters.TaskFinishAdapter;
 import ir.hosseinmoghadam.taskmanager.models.Task;
 import ir.hosseinmoghadam.taskmanager.responses.TaskResponse;
@@ -28,7 +29,8 @@ import retrofit2.Response;
 
 public class FinishTaskFragment extends Fragment {
 
-    List tasks;
+    public static TaskFinishAdapter adapter;
+    public static List tasks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +41,7 @@ public class FinishTaskFragment extends Fragment {
         TaskApiService taskApiService = App.retrofit.create(TaskApiService.class);
         tasks = new ArrayList<>();
 
-        final TaskFinishAdapter adapter = new TaskFinishAdapter(tasks,getActivity());
+        adapter = new TaskFinishAdapter(tasks,getActivity());
         ListView listView = (ListView) view.findViewById(R.id.listView2);
         listView.setAdapter(adapter);
 

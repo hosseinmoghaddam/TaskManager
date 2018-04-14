@@ -25,8 +25,8 @@ import retrofit2.Response;
 
 
 public class TaskFragment extends Fragment {
-
-    List tasks;
+    public static TaskAdapter adapter;
+    public static List tasks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +36,7 @@ public class TaskFragment extends Fragment {
         TaskApiService taskApiService = App.retrofit.create(TaskApiService.class);
         tasks = new ArrayList<>();
 
-        final TaskAdapter adapter = new TaskAdapter(tasks,getActivity());
+        adapter = new TaskAdapter(tasks,getActivity());
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
