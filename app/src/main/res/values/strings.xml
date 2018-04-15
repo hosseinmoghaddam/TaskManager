@@ -15,13 +15,17 @@
     <string name="register">ثبت نام</string>
     <string name="action_sign_in_short">ورود</string>
     <string name="error_invalid_email">نام کاربری اشتباه است. </string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_password">لطفا کلید واژه را پر کنید</string>
     <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_field_required">نام کاربری نباید خالی باشد</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_about">درباره ما</string>
+    <string name="dummy_button">بازگشت</string>
+    <string name="dummy_content">نرم افزاری ساده برای مهندسی نرم 2</string>
 </resources>

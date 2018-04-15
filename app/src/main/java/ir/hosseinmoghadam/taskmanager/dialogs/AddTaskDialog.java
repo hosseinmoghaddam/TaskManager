@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -78,9 +79,9 @@ public class AddTaskDialog extends Dialog implements
                                 DoingTaskFragment.tasks.add(task);
                                 DoingTaskFragment.adapter.notifyDataSetChanged();
                             }
-
                             Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                         } else {
+                            Toast.makeText(getContext(), " ثبت نشد", Toast.LENGTH_SHORT).show();
                             Log.i("hossin2018", "onResponse: "+response.code());
                             Log.i("hossin2018", "onResponse: "+response.message());
                         }
@@ -88,6 +89,7 @@ public class AddTaskDialog extends Dialog implements
 
                     @Override
                     public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                        Toast.makeText(getContext(), " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                     }
                 });

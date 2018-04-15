@@ -1,5 +1,6 @@
 package ir.hosseinmoghadam.taskmanager.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,12 +46,17 @@ public class FinishTaskFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView2);
         listView.setAdapter(adapter);
 
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("در حال بارگذاری ...");
+        progressDialog.show();
+
         Call<TaskResponse> call = taskApiService.all("Bearer "+App.getAccessToken());
 
         call.enqueue(new Callback<TaskResponse>() {
             @Override
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                 if (response.isSuccessful()){
+                    progressDialog.dismiss();
                     tasks.clear();
                     tasks.addAll(getFinishTasks(response.body().getTasks()));
                     adapter.notifyDataSetChanged();
@@ -64,7 +70,7 @@ public class FinishTaskFragment extends Fragment {
             public void onFailure(Call<TaskResponse> call, Throwable t) {
                 Log.d("affff",t.toString(),t);
                 Log.d("affff",call.toString(),t);
-                Toast.makeText(getActivity(), "failed"+t.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
             }
         });
 

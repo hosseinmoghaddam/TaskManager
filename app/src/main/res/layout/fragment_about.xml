@@ -1,17 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ir.hosseinmoghadam.taskmanager.fragments.AboutFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="درباره ما"
-        android:textAlignment="center"
-        android:textSize="50sp"
-        android:textStyle="bold" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="درباره ما"
+        android:textSize="50sp"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="229dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="برنامه ای ساده برای مهندسی نرم ۲"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="314dp" />
+</android.support.constraint.ConstraintLayout>

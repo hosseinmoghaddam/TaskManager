@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ir.hosseinmoghadam.taskmanager.dialogs.AddTaskDialog;
+import ir.hosseinmoghadam.taskmanager.fragments.AboutFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.FinishTaskFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.TaskFragment;
@@ -144,8 +145,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+            startActivity(new Intent(this, AboutActivity.class));
 
+        } else if (id == R.id.nav_send) {
+            finish();
         }
         try {
             assert fragmentClass != null;

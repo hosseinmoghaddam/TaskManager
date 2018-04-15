@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+    int statusCode = 0;
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
@@ -93,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        if (App.retrofit == null){
+        if (App.retrofit == null) {
             App.retrofit = new Retrofit.Builder()
                     .baseUrl(App.baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -104,25 +106,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
+                final ProgressBar progressBar = (ProgressBar) findViewById(R.id.login_progress);
+                progressBar.setVisibility(View.VISIBLE);
 //                attemptLogin();
 //                Toast.makeText(LoginActivity.this, "clicked", Toast.LENGTH_SHORT).show();
                 LoginApiService service = App.retrofit.create(LoginApiService.class);
-                Call<LoginResponse> call = service.login("5a9314fbe4b04e579ee1edbe","5a9314fbe4b05bb64131ee38", String.valueOf(mEmailView.getText()), String.valueOf(mPasswordView.getText()));
+                Call<LoginResponse> call = service.login("5a9314fbe4b04e579ee1edbe", "5a9314fbe4b05bb64131ee38", String.valueOf(mEmailView.getText()), String.valueOf(mPasswordView.getText()));
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()) {
+                            statusCode = response.code();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
-                            Log.i("test1397", "onResponse: code"+ response.code());
-                            Log.i("test1397", "onResponse: body"+ response.body().getAccessToken());
-                            App.access_token =response.body().getAccessToken();
-                        }
-                        else {
-                            Log.i("test1397", "onResponse: code"+ response.code());
-                            Log.i("test1397", "onResponse: body"+ response.body());
+                            Log.i("test1397", "onResponse: code" + response.code());
+                            Log.i("test1397", "onResponse: body" + response.body().getAccessToken());
+                            App.access_token = response.body().getAccessToken();
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            statusCode = response.code();
+                            Toast.makeText(LoginActivity.this, "نام کاربری یا کلیدواژه اشتباه است.", Toast.LENGTH_SHORT).show();
+                            Log.i("test1397", "onResponse: code" + response.code());
+                            Log.i("test1397", "onResponse: body" + response.body());
                         }
 
                     }
@@ -130,10 +137,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
                         Log.i("test1397", "onResponse: failed");
-                        Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 
             }
@@ -227,11 +233,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        }
+/*        else if (!isUsernameValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -245,11 +252,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
         }
     }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+/*
+    private boolean isUsernameValid(String email) {
+        if (statusCode != 201)
+            return false;
+        else return true;
+    }*/
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
