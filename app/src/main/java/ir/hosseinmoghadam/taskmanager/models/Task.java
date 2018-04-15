@@ -15,6 +15,9 @@ public class Task {
     @SerializedName("completed")
     private Boolean completed;
 
+    @SerializedName("_id")
+    private String id;
+
     public Task() {
     }
 
@@ -40,8 +43,13 @@ public class Task {
         this.description = description;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public Boolean getCompleted() {
         return completed;
+
     }
 
     public void setCompleted(Boolean completed) {

@@ -86,6 +86,7 @@ public class TaskAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, ItemDetailActivity.class);
                 intent.putExtra("description",((TextView)((ViewHolder)view.getTag()).description).getText().toString() );
                 intent.putExtra("name",((TextView)((ViewHolder)view.getTag()).name).getText().toString() );
+                intent.putExtra("id",task.getId() );
 
                 context.startActivity(intent);
             }
