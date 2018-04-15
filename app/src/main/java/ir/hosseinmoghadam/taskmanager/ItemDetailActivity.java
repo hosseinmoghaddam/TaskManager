@@ -34,6 +34,8 @@ import static java.security.AccessController.getContext;
 public class ItemDetailActivity extends AppCompatActivity {
 
     String id;
+    String description;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                EditTaskDialog dialog =new EditTaskDialog(ItemDetailActivity.this);
+                EditTaskDialog dialog =new EditTaskDialog(ItemDetailActivity.this, name,description, false );
                 dialog.show();
             }
         });
@@ -64,8 +66,8 @@ public class ItemDetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String description = intent.getStringExtra("description");
-        String name = intent.getStringExtra("name");
+        description = intent.getStringExtra("description");
+        name = intent.getStringExtra("name");
         id = intent.getStringExtra("id");
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) this.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
