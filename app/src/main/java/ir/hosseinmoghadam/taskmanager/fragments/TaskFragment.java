@@ -1,6 +1,7 @@
 package ir.hosseinmoghadam.taskmanager.fragments;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
 import ir.hosseinmoghadam.taskmanager.adapters.TaskAdapter;
@@ -41,9 +43,11 @@ public class TaskFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-        final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setTitle("در حال بارگذاری ...");
-        progressDialog.show();
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("در حال دریافت اطلاعات ...");
+        pDialog.setCancelable(false);
+        pDialog.show();
 
         Call<TaskResponse> call = taskApiService.all("Bearer "+App.getAccessToken());
 
@@ -51,18 +55,20 @@ public class TaskFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                 if (response.isSuccessful()){
-                    progressDialog.dismiss();
+                    pDialog.dismiss();
                     tasks.clear();
                     tasks.addAll(response.body().getTasks());
                     adapter.notifyDataSetChanged();
                     Log.i("hossintest2018", "onResponse: "+response.code());
                 } else {
+                    pDialog.dismiss();
                     Log.i("hossintest2018", "onResponse: "+response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<TaskResponse> call, Throwable t) {
+                pDialog.dismiss();
                 Log.d("affff",t.toString(),t);
                 Log.d("affff",call.toString(),t);
                 Toast.makeText(getContext(), " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
