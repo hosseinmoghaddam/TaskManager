@@ -2,6 +2,7 @@ package ir.hosseinmoghadam.taskmanager.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -15,8 +16,10 @@ import android.widget.ToggleButton;
 
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
+import ir.hosseinmoghadam.taskmanager.RegisterActivity;
 import ir.hosseinmoghadam.taskmanager.adapters.TaskFinishAdapter;
 import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
 import ir.hosseinmoghadam.taskmanager.fragments.FinishTaskFragment;
@@ -56,6 +59,11 @@ public class AddTaskDialog extends Dialog implements
 
     @Override
     public void onClick(View view) {
+        final SweetAlertDialog pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("در حال ثبت اطلاعات ...");
+        pDialog.setCancelable(false);
+        pDialog.show();
         final Task task =new Task(
                 ((EditText)findViewById(R.id.taskName)).getText().toString(),
                 ((EditText)findViewById(R.id.taskDescription)).getText().toString(),
@@ -67,6 +75,12 @@ public class AddTaskDialog extends Dialog implements
                     @Override
                     public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                         if (response.isSuccessful()){
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText("ثبت شد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
                             if (TaskFragment.tasks !=null){
                                 TaskFragment.tasks.add(task);
                                 TaskFragment.adapter.notifyDataSetChanged();
@@ -79,9 +93,15 @@ public class AddTaskDialog extends Dialog implements
                                 DoingTaskFragment.tasks.add(task);
                                 DoingTaskFragment.adapter.notifyDataSetChanged();
                             }
-                            Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+
                         } else {
-                            Toast.makeText(getContext(), " ثبت نشد", Toast.LENGTH_SHORT).show();
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText("ثبت نشد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
+
                             Log.i("hossin2018", "onResponse: "+response.code());
                             Log.i("hossin2018", "onResponse: "+response.message());
                         }
@@ -89,7 +109,13 @@ public class AddTaskDialog extends Dialog implements
 
                     @Override
                     public void onFailure(Call<Map<String, String>> call, Throwable t) {
-                        Toast.makeText(getContext(), " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
+                        pDialog.dismiss();
+                        final SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+                        sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        sDialog.setTitleText("مشکلی پیش آمده لطفا ارتباط را چک کنید.");
+                        sDialog.setCancelable(false);
+                        sDialog.show();
+              
                         Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                     }
                 });

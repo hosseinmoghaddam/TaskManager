@@ -1,5 +1,6 @@
 package ir.hosseinmoghadam.taskmanager;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.models.User;
 import ir.hosseinmoghadam.taskmanager.responses.RegisterResponse;
 import ir.hosseinmoghadam.taskmanager.services.RegisterApiService;
@@ -28,7 +30,11 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                final SweetAlertDialog pDialog = new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("در حال ارسال اطلاعات ...");
+                pDialog.setCancelable(false);
+                pDialog.show();
                 Call<RegisterResponse> call = service.register( new User(
                         ((TextView)findViewById(R.id.firstName)).getText().toString(),
                         ((TextView)findViewById(R.id.lastName)).getText().toString(),
@@ -41,9 +47,24 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                         if(response.isSuccessful()){
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText("ثبت شد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
                             Log.i("regist1397", "onResponse: "+response.code());
                         }else {
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText(" متاسفانه ثبت نشد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
                             Log.i("regist1397", "onResponse: "+response.code());
+                            Log.i("regist1397", "onResponse: "+response.message());
+                            Log.i("regist1397", "onResponse: "+call.request().headers());
+                            Log.i("regist1397", "onResponse: "+call.request().body());
                         }
                     }
 
