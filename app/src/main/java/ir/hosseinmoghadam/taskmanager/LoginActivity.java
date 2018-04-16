@@ -127,7 +127,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } else {
                             progressBar.setVisibility(View.GONE);
                             statusCode = response.code();
-                            Toast.makeText(LoginActivity.this, "نام کاربری یا کلیدواژه اشتباه است.", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(view, "نام کاربری یا کلیدواژه اشتباه است.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+//                            Toast.makeText(LoginActivity.this, "نام کاربری یا کلیدواژه اشتباه است.", Toast.LENGTH_SHORT).show();
                             Log.i("test1397", "onResponse: code" + response.code());
                             Log.i("test1397", "onResponse: body" + response.body());
                         }
