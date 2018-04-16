@@ -53,6 +53,12 @@ public class RegisterActivity extends AppCompatActivity {
                             sDialog.setTitleText("ثبت شد.");
                             sDialog.setCancelable(false);
                             sDialog.show();
+                            sDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    finish();
+                                }
+                            });
                             Log.i("regist1397", "onResponse: "+response.code());
                         }else {
                             pDialog.dismiss();
