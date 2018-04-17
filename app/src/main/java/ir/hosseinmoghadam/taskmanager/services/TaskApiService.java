@@ -12,6 +12,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -42,4 +43,12 @@ public interface TaskApiService {
     @DELETE("/object-storage/classes/jobs/{ObjectId}")
     Call<String> delete(
             @Header("Authorization") String token, @Path("ObjectId") String ObjectId);
+
+    @Headers({
+            "X-Backtory-Object-Storage-Id: 5a9314fce4b092a32b632af9",
+            "Content-Type: application/json"
+    })
+    @PUT("/object-storage/classes/jobs/{ObjectId}")
+    Call<Map<String,String>> edit(
+            @Header("Authorization") String token, @Path("ObjectId") String ObjectId, @Body Task task);
 }

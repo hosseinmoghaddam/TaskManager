@@ -2,6 +2,7 @@ package ir.hosseinmoghadam.taskmanager.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ToggleButton;
 
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.App;
 import ir.hosseinmoghadam.taskmanager.R;
 import ir.hosseinmoghadam.taskmanager.fragments.DoingTaskFragment;
@@ -38,11 +40,13 @@ public class EditTaskDialog extends Dialog implements
     String name;
     String description;
     Boolean doing;
-    public EditTaskDialog(@NonNull Context context, String name, String description , Boolean doing) {
+    String id;
+    public EditTaskDialog(@NonNull Context context, String name, String description , Boolean doing, String id) {
         super(context);
         this.name = name;
         this.description = description;
         this.doing = doing;
+        this.id = id;
     }
 
     @Override
@@ -71,10 +75,15 @@ public class EditTaskDialog extends Dialog implements
                 ((ToggleButton)findViewById(R.id.toggleButton)).isChecked());
         switch (view.getId()) {
             case R.id.ok:
-                Call<Map<String, String>> call = service.add("Bearer "+App.getAccessToken(), task);
-                call.enqueue(new Callback<Map<String, String>>() {
+                final SweetAlertDialog pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("در حال ثبت اطلاعات ...");
+                pDialog.setCancelable(false);
+                pDialog.show();
+                Call<Map<String,String>> call = service.edit("Bearer "+App.getAccessToken(),id, task);
+                call.enqueue(new Callback<Map<String,String>>() {
                     @Override
-                    public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                    public void onResponse(Call<Map<String,String>> call, Response<Map<String,String>> response) {
                         if (response.isSuccessful()){
                             if (TaskFragment.tasks !=null){
                                 TaskFragment.tasks.add(task);
@@ -88,16 +97,28 @@ public class EditTaskDialog extends Dialog implements
                                 DoingTaskFragment.tasks.add(task);
                                 DoingTaskFragment.adapter.notifyDataSetChanged();
                             }
-                            Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText("ویرایش شد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
+//                            Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(), " ثبت نشد", Toast.LENGTH_SHORT).show();
+                            pDialog.dismiss();
+                            final SweetAlertDialog sDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+                            sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sDialog.setTitleText("ویرایش نشد.");
+                            sDialog.setCancelable(false);
+                            sDialog.show();
+//                            Toast.makeText(getContext(), " ثبت نشد", Toast.LENGTH_SHORT).show();
                             Log.i("hossin2018", "onResponse: "+response.code());
                             Log.i("hossin2018", "onResponse: "+response.message());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                    public void onFailure(Call<Map<String,String>> call, Throwable t) {
                         Toast.makeText(getContext(), " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                     }

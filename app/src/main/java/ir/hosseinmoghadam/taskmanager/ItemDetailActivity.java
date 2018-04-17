@@ -58,7 +58,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                EditTaskDialog dialog =new EditTaskDialog(ItemDetailActivity.this, name,description, false );
+                EditTaskDialog dialog =new EditTaskDialog(ItemDetailActivity.this, name,description, false, id );
                 dialog.show();
             }
         });
