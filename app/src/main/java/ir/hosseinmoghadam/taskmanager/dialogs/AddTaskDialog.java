@@ -18,6 +18,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.App;
+import ir.hosseinmoghadam.taskmanager.LoginActivity;
 import ir.hosseinmoghadam.taskmanager.R;
 import ir.hosseinmoghadam.taskmanager.RegisterActivity;
 import ir.hosseinmoghadam.taskmanager.adapters.TaskFinishAdapter;
@@ -67,7 +68,8 @@ public class AddTaskDialog extends Dialog implements
         final Task task =new Task(
                 ((EditText)findViewById(R.id.taskName)).getText().toString(),
                 ((EditText)findViewById(R.id.taskDescription)).getText().toString(),
-                ((ToggleButton)findViewById(R.id.toggleButton)).isChecked());
+                ((ToggleButton)findViewById(R.id.toggleButton)).isChecked(),
+                App.username);
         switch (view.getId()) {
             case R.id.ok:
                 Call<Map<String, String>> call = service.add("Bearer "+App.getAccessToken(), task);

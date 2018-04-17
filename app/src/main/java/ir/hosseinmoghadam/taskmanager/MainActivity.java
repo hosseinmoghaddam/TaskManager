@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         ((TextView)navigationView.getHeaderView(0).findViewById(R.id.username)).setText(LoginActivity.mEmailView.getText());
-
+        App.username = LoginActivity.mEmailView.getText().toString();
         navigationView.setNavigationItemSelectedListener(this);
 
 

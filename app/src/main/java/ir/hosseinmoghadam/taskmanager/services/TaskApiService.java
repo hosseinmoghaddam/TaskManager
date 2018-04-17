@@ -34,7 +34,7 @@ public interface TaskApiService {
     })
     @POST("/object-storage/classes/query/jobs/")
     Call<TaskResponse> all(
-            @Header("Authorization") String token);
+            @Header("Authorization") String token, @Body Map<String,String> username);
 
     @Headers({
             "X-Backtory-Object-Storage-Id: 5a9314fce4b092a32b632af9",

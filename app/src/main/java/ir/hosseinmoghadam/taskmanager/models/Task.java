@@ -18,13 +18,17 @@ public class Task {
     @SerializedName("_id")
     private String id;
 
+    @SerializedName("userID")
+    private String userID;
+
     public Task() {
     }
 
-    public Task(String name, String description, Boolean completed) {
+    public Task(String name, String description, Boolean completed, String userID) {
         this.name = name;
         this.description = description;
         this.completed = completed;
+        this.userID = userID;
     }
 
     public String getName() {
@@ -54,5 +58,17 @@ public class Task {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

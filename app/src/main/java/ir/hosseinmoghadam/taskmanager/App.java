@@ -12,7 +12,7 @@ public class App extends Application {
     public static String baseUrl = "https://api.backtory.com/";
     public static Retrofit retrofit = null;
     public static String access_token;
-//    public static String lastname;
+    public static String username = null;
 
     protected static App instance;
 

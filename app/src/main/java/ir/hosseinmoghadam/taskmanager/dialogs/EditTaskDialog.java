@@ -72,7 +72,8 @@ public class EditTaskDialog extends Dialog implements
         final Task task =new Task(
                 ((EditText)findViewById(R.id.taskName)).getText().toString(),
                 ((EditText)findViewById(R.id.taskDescription)).getText().toString(),
-                ((ToggleButton)findViewById(R.id.toggleButton)).isChecked());
+                ((ToggleButton)findViewById(R.id.toggleButton)).isChecked(),
+                App.username);
         switch (view.getId()) {
             case R.id.ok:
                 final SweetAlertDialog pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);

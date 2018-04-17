@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -48,8 +49,10 @@ public class TaskFragment extends Fragment {
         pDialog.setTitleText("در حال دریافت اطلاعات ...");
         pDialog.setCancelable(false);
         pDialog.show();
+        HashMap<String,String> map = new HashMap<String, String>();
+        map.put("userID",App.username);
+        Call<TaskResponse> call = taskApiService.all("Bearer "+App.getAccessToken(),map);
 
-        Call<TaskResponse> call = taskApiService.all("Bearer "+App.getAccessToken());
 
         call.enqueue(new Callback<TaskResponse>() {
             @Override
