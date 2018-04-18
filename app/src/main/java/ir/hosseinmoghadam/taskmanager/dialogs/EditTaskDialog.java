@@ -104,6 +104,12 @@ public class EditTaskDialog extends Dialog implements
                             sDialog.setTitleText("ویرایش شد.");
                             sDialog.setCancelable(false);
                             sDialog.show();
+                           /* sDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    getActivity().finish();
+                                }
+                            });*/
 //                            Toast.makeText(getContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                         } else {
                             pDialog.dismiss();

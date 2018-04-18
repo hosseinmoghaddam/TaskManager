@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ir.hosseinmoghadam.taskmanager.responses.LoginResponse;
 import ir.hosseinmoghadam.taskmanager.services.LoginApiService;
 import retrofit2.Call;
@@ -139,6 +141,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
                         Log.i("test1397", "onResponse: failed");
+
+                        final SweetAlertDialog sDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                        sDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        sDialog.setTitleText("مشکلی پیش آمده لطفا ارتباط را چک کنید.");
                         Toast.makeText(LoginActivity.this, " مشکلی پیش آمده لطفا ارتباط را چک کنید", Toast.LENGTH_SHORT).show();
                     }
                 });
